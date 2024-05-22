@@ -6,29 +6,44 @@ import './App.css'
 class App extends Component {
   constructor(){
     super()
-    this.state = {
-      monsters:[
-        {
-          name:'Daniel'
-        },
-        {
-          name:'Abayomi'
-        },
-        {
-          name:'Victor'
-        },
-        {
-          name:'Iyanu'
-        }
-      ]
+    
+  console.log('constructor')
+   
+   this.state = {
+      monsters:[]
     }
   }
+
+  componentDidMount(){
+    console.log('componentMount')
+    fetch("https://jsonplaceholder.typicode.com/users")
+    .then((res) => res.json() )
+    .then((users)=> this.setState(()=>{
+      return {monsters: users}
+    }))
+    }
   
   render(){
+    console.log('render')
     return (
       <div className="App">
+        <input className="search-box" type="search" placeholder="search monsters"
+        
+        onChange={(event) =>{       
+          const filteredMonster = this.state.monsters.filter((monster)=>
+            {return monster.name.includes(event.target.value)
+            })
+        this.setState(()=>{
+          return {monsters:filteredMonster}
+        })
+  }}/>
+      
+      
        {this.state.monsters.map((monster) => {
-          return <h1>{monster.name}</h1>;
+          return <div key={monster.id}>
+            <h1>{monster.name}</h1>
+            <p>{monster.email}</p>
+          </div>;
         })}
       </div>
     )
