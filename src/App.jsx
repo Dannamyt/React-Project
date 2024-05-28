@@ -1,8 +1,9 @@
 import React,{ Component } from "react";
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import CardList from "./Components/CardList/CardList";
+import SearchBox from "./Components/SearchBox/SearchBox";
+
 class App extends Component {
   constructor(){
     super()
@@ -24,6 +25,14 @@ class App extends Component {
     }))
     }
   
+ onSearchChange = (event) =>{       
+      const searchField = event.target.value.toLowerCase()
+     
+    this.setState(()=>{
+      return {searchField}
+    })
+}
+
   render(){
     console.log('render')
     const filteredMonster = this.state.monsters.filter((monster)=>
@@ -31,23 +40,16 @@ class App extends Component {
       })
     return (
       <div className="App">
-        <input className="search-box" type="search" placeholder="search monsters"
-        
-        onChange={(event) =>{       
-          const searchField = event.target.value.toLowerCase()
-         
-        this.setState(()=>{
-          return {searchField}
-        })
-  }}/>
-      
-      
-       {filteredMonster.map((monster) => {
+        <h1 className="title">Monsters Rolodex</h1>
+      <SearchBox className='search-box' placeholder='search-monsters' onChangeHandler ={this.onSearchChange}/>
+       {/* {filteredMonster.map((monster) => {
           return <div key={monster.id}>
             <h1>{monster.name}</h1>
             <p>{monster.email}</p>
           </div>;
-        })}
+        })} */}
+      <CardList monsters={filteredMonster}/>
+
       </div>
     )
   
